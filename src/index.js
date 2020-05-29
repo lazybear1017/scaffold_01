@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './app'
+import './reset.less'
 
 function render (APP) {
     ReactDOM.render(<APP />, document.getElementById('app'))
