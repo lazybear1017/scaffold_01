@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');    // 拆分CSS
+const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 每次打包前清空dist文件夹
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+console.log(process.env.NODE_ENV)
 
 module.exports = {
     entry:{
@@ -14,19 +17,23 @@ module.exports = {
     module:{
         rules:[
             {
-               test:/\.less$/,
-               use:ExtractTextWebpackPlugin.extract({
-                   // 将css用link的方式引入就不再需要style-loader了
-                   fallback:'style-loader',
-                   use:['css-loader','less-loader']
-               })
+                test:/\.less$/,
+                use: [
+                    {
+                      loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                    'less-loader'
+                ]
             },
             {
-                test: /\.css$/,     // 解析css
-                use: ExtractTextWebpackPlugin.extract({
-                    fallback: "style-loader",
-                    use: ['css-loader']
-                })
+                test:/\.css$/,
+                use: [
+                    {
+                      loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                ]
             },
             {
                 test: /\.js$/,
@@ -49,7 +56,11 @@ module.exports = {
             filename:'detail.html',
             chunks:['detail']//对应关系 detail.detail.html
         }),
-        new ExtractTextWebpackPlugin('css/style.css')
+        new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin({
+            filename:  'css/[name].[hash:8].css', // 入口css文件名
+            chunkFilename: 'public/css/[id].[hash:8].chunk.css' // 非入口css文件名
+        }),
     ],
     devServer:{
         port:8080,      
