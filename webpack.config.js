@@ -50,9 +50,22 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: [{
-                     loader: 'babel-loader'
+                    loader: 'babel-loader'
                 }],
                 exclude: /node_modules/
+            },
+            {
+                test: /\.(png|svg|jpe?g|gif)$/i,
+                   use: [
+                     {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: 'images/',
+                            publicPath : '/dist/images',
+                            name: '[name].[hash:8].[ext]'
+                        }
+                     }
+                   ]
             }
         ]
     },
