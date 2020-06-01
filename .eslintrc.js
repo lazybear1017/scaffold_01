@@ -9,7 +9,7 @@ module.exports = {
   ],
   settings: {
     react: {
-        version: "detect" // 自动检查已安装的版本
+      version: 'detect' // 自动检查已安装的版本
     }
   },
   rules: {
