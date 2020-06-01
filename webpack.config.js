@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // 每次打包前清空dist文件夹
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-console.log(process.env.NODE_ENV)
+const devMode = process.env.NODE_ENV !== 'production'
 
 module.exports = {
     entry:{
@@ -20,20 +20,32 @@ module.exports = {
                 test:/\.less$/,
                 use: [
                     {
-                      loader: MiniCssExtractPlugin.loader,
-                    },
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                          // development环境启用hmr
+                          hmr: devMode,
+                          // if hmr does not work, this is a forceful method.
+                          reloadAll: true,
+                        },
+                      },
                     'css-loader',
                     'less-loader'
                 ]
             },
             {
-                test:/\.css$/,
+                test: /\.css$/,
                 use: [
-                    {
-                      loader: MiniCssExtractPlugin.loader,
+                  {
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                      // development环境启用hmr
+                      hmr: devMode,
+                      // 如果hmr不工作，这是一个强有力的方法
+                      reloadAll: true,
                     },
-                    'css-loader',
-                ]
+                  },
+                  'css-loader',
+                ],
             },
             {
                 test: /\.js$/,
@@ -58,8 +70,8 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-            filename:  'css/[name].[hash:8].css', // 入口css文件名
-            chunkFilename: 'public/css/[id].[hash:8].chunk.css' // 非入口css文件名
+            filename: 'css/[name].css',
+            chunkFilename: 'css/[id].css'
         }),
     ],
     devServer:{
@@ -69,5 +81,6 @@ module.exports = {
         overlay:true,
         historyApiFallback:true
     },
-    mode:'development'//模式配置
+    devtool: 'source-map',
+    mode:'development'
 }
