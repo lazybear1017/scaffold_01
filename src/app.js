@@ -6,7 +6,7 @@ import img from '../public/assets/images/img.png'
 
 export default class App extends React.Component {
   componentDidMount () {
-    console.log('熊程峰1')
+    // console.log('熊程峰122333')
   }
 
   render () {
