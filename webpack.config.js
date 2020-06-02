@@ -12,7 +12,7 @@ module.exports = {
     detail: './src/detail.js'
   },
   output: {
-    filename: '[name].js',
+    filename: 'js/[name].js',
     path: path.resolve('dist')
   },
   module: {
